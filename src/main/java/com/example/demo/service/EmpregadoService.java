@@ -5,8 +5,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -24,10 +23,9 @@ public class EmpregadoService {
 	@Autowired
 	EmpregadoRepository empregadoRepository;
 	
-	@Autowired
-	CacheManager cacheManager;
 	
-	@Cacheable("empregados")
+	
+	
 	public Page<EmpregadoDTO> findAll(Integer cpf, String nome, String nomeAgencia, Integer qtdItensPagina, Integer numeroPagina, String direcaoOrdenacao, String campoOrdem){
 	
 		PageRequest pageRequest = PageRequest.of(numeroPagina, qtdItensPagina,Sort.Direction.valueOf(direcaoOrdenacao),campoOrdem);
@@ -46,7 +44,7 @@ public class EmpregadoService {
 		*/
 		
 		List<EmpregadoDTO> empregadosDto = pageEmpregados.stream()
-				.map(e -> new EmpregadoDTO().createEmpregadoDto(e)).collect(Collectors.toList());
+				.map(e ->  EmpregadoDTO.createEmpregadoDto(e)).collect(Collectors.toList());
 		
 		int totalElements = (int) pageEmpregados.getTotalElements();
 		
@@ -63,9 +61,9 @@ public class EmpregadoService {
 	    	empregado = opEmpregado.get();
 	    }
 		
-		EmpregadoDTO empregadoDto = new EmpregadoDTO();
-		empregadoDto.createEmpregadoDto(empregado);
-		return empregadoDto;
+		
+	    return	EmpregadoDTO.createEmpregadoDto(empregado);
+		
 	}
 	
 	public void save(Empregado e){
@@ -73,8 +71,17 @@ public class EmpregadoService {
 		
 	}
 	
-	public void clearCacheEmpregados() {
-		cacheManager.getCache("empregados").clear();
-		System.out.println("Limpando cache...");
+	public List<EmpregadoDTO> buscarSalarios(Double salario){
+		List<Empregado> listEmpregados = empregadoRepository.findAll();
+		
+		List<EmpregadoDTO> listEmpregadoDTO = 
+		listEmpregados
+		.stream()
+		.filter(empregado -> empregado.getSalario() > salario)
+		.map(empregado -> EmpregadoDTO.createEmpregadoDto(empregado)).collect(Collectors.toList());
+		
+		return listEmpregadoDTO;
 	}
+	
+	
 }

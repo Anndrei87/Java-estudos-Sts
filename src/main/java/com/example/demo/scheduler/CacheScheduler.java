@@ -18,7 +18,7 @@ public class CacheScheduler {
 	
 	@Scheduled(fixedRate = 86400000)
 	public void evictAllcachesAtIntervals() {
-		empregadoService.clearCacheEmpregados();
+		//empregadoService.clearCacheEmpregados();
 		//cryptoService.getBitCoinPrice();
 	}
 }

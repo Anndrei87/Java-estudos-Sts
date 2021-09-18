@@ -28,7 +28,9 @@ public class EmpregadoDTO implements Serializable {
 	
 	private String nomesDependentes;
 	
-	public EmpregadoDTO createEmpregadoDto(Empregado empregado) {
+	private Double salario;
+	
+	public static EmpregadoDTO createEmpregadoDto(Empregado empregado) {
 		EmpregadoDTO empregadoDTO = new EmpregadoDTO();
 		
 		empregadoDTO.setCpf(empregado.getCpf());
@@ -37,6 +39,8 @@ public class EmpregadoDTO implements Serializable {
 		
 		empregadoDTO.setNomeInstituicao(empregado.getAgencia() != null && empregado.getAgencia().getInstituicao() != null? 
 				empregado.getAgencia().getInstituicao().getName() : "");
+		
+		empregadoDTO.setSalario(empregado.getSalario());
 		
 		String nomeDependentesTemp = "";
 		

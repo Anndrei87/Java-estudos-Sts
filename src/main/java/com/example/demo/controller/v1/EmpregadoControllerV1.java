@@ -1,7 +1,8 @@
 package com.example.demo.controller.v1;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,7 +57,13 @@ public class EmpregadoControllerV1 {
 		return new ResponseEntity<String>("ok",HttpStatus.OK);
 	}
 	
-	@CacheEvict(value = "empregado", allEntries = true)
-	@GetMapping("/evict")
-	public void evictAllCacheValues() {}
+	@GetMapping("/buscarSalarios/{salario}")
+	public ResponseEntity<List<EmpregadoDTO>> buscarSalariosMaiores(@PathVariable Double salario){
+		return new ResponseEntity<List<EmpregadoDTO>>(empregadoService.buscarSalarios(salario), HttpStatus.OK);
+	}
+	
+	
+	
 }
+	
+	

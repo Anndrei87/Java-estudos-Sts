@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -31,6 +32,10 @@ public class Empregado {
 	
 	@Column
 	private String nome;
+	
+	@Column
+	private Double salario;
+	
 	
 	@ManyToOne
 	@JoinColumn(name = "id_agencia")
